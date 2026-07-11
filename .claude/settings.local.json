@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pip3 install *)",
+      "Bash(npm run *)",
+      "Bash(git mv *)",
+      "Bash(mv src/features/auth/authContext.ts src/features/auth/authContextInstance.ts)",
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(npm test *)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(sed -n '/Page 5/,/^---/p' docs/assignment/requirements.md)",
+      "Bash(sed -n '/10\\\\. Publish Test/,/12\\\\. Fetch Bulk/p' docs/api/api-documentation.md)"
+    ]
+  }
+}

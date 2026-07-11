@@ -1,0 +1,9 @@
+dist
+node_modules
+coverage
+package-lock.json
+
+# Source-of-truth assignment docs and local tool settings — not app code
+docs
+.claude
+CLAUDE.md

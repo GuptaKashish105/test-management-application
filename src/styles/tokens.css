@@ -1,0 +1,65 @@
+/**
+ * Design tokens extracted from the Figma export PNGs (docs/figma/*.png) via
+ * pixel sampling. These are a best-effort baseline — confirm exact values
+ * against the live Figma file (docs/figma/figma-link.md) before pixel-perfect
+ * work, since PNG export compression can shift values slightly.
+ *
+ * Tailwind v4 CSS-first theme: any custom property here becomes a Tailwind
+ * utility (e.g. --color-brand-500 => bg-brand-500, text-brand-500, ...).
+ */
+@theme {
+  /* Brand (primary buttons, active tabs, links, logo) */
+  --color-brand-50: #eef0ff;
+  --color-brand-100: #dcdfff;
+  --color-brand-200: #c8cdf4;
+  --color-brand-300: #a9b0ff;
+  --color-brand-400: #888dff;
+  --color-brand-500: #787bff;
+  --color-brand-600: #577ef7;
+  --color-brand-700: #2845f8;
+  --color-brand-800: #2438c9;
+  --color-brand-900: #1f2e9e;
+
+  /* Success / teal (Easy badge, live status, confirmation) */
+  --color-success-50: #e6f9f5;
+  --color-success-100: #b9ead7;
+  --color-success-200: #95dfc3;
+  --color-success-500: #00bcab;
+  --color-success-600: #00a45e;
+  --color-success-700: #00854c;
+
+  /* Warning / amber (topic & sub-topic tags) */
+  --color-warning-100: #ffedcc;
+  --color-warning-300: #ffe0a3;
+  --color-warning-500: #ffd475;
+  --color-warning-700: #cc9a2e;
+
+  /* Danger / coral (delete, wrong-answer marking) */
+  --color-danger-100: #ffe1e1;
+  --color-danger-300: #ff8688;
+  --color-danger-500: #ff7476;
+  --color-danger-700: #d94d4f;
+
+  /* Neutral / text & surfaces */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f8faff;
+  --color-neutral-100: #f4f3ec;
+  --color-neutral-200: #e5e4e7;
+  --color-neutral-300: #dcdfff;
+  --color-neutral-500: #6b6375;
+  --color-neutral-700: #4f5868;
+  --color-neutral-800: #364053;
+  --color-neutral-900: #08060d;
+
+  /* Typography */
+  --font-sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+
+  /* Radius (inputs/cards read as consistently rounded in the Figma set) */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgba(8, 6, 13, 0.06), 0 1px 3px rgba(8, 6, 13, 0.1);
+  --shadow-modal: 0 10px 15px -3px rgba(8, 6, 13, 0.1), 0 4px 6px -2px rgba(8, 6, 13, 0.05);
+}

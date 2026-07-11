@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+@import './styles/tokens.css';
+
+@layer base {
+  body {
+    @apply bg-neutral-50 text-neutral-800 font-sans antialiased;
+  }
+}
