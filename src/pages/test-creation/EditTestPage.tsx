@@ -1,6 +1,6 @@
 import { paths } from '@app/router/paths'
 import { PageContainer } from '@components/layout'
-import { Alert, Spinner } from '@components/ui'
+import { Alert, LoadingState } from '@components/ui'
 import type { TestMetadataFormValues } from '@features/tests'
 import { TestMetadataForm, useEditTestFormData, useUpdateTest } from '@features/tests'
 import type { UpdateTestPayload } from '@services/tests'
@@ -40,15 +40,10 @@ export function EditTestPage() {
 
   return (
     <PageContainer>
-      <h1 className="text-xl font-semibold text-neutral-900">Edit Test</h1>
+      <h1 className="text-xl font-semibold text-neutral-900">Edit Test creation</h1>
 
       <div className="mt-6 max-w-4xl">
-        {isLoading && (
-          <div className="flex items-center justify-center gap-2 py-16 text-neutral-500">
-            <Spinner />
-            <span>Loading test…</span>
-          </div>
-        )}
+        {isLoading && <LoadingState message="Loading test…" />}
 
         {isError && <Alert tone="danger">{errorMessage ?? 'Failed to load this test.'}</Alert>}
 
@@ -68,7 +63,7 @@ export function EditTestPage() {
               onSubmit={handleSubmit}
               onCancel={() => navigate(paths.dashboard)}
               isSubmitting={updateTest.isPending}
-              submitLabel="Save Changes"
+              submitLabel="Save"
               submitError={updateTest.error?.message}
             />
           </div>

@@ -1,66 +1,48 @@
-import { paths } from '@app/router/paths'
-import { Alert, Button, Modal } from '@components/ui'
-import { usePublishTest } from '@features/tests'
-import { cn } from '@utils/cn'
+import { Alert } from '@components/ui'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 export interface PublishPanelProps {
-  testId: string
-  testName: string
   isAlreadyLive: boolean
-  canPublish: boolean
-  disabledReason?: string
 }
 
 /**
  * Figma shows "Publish Now" / "Schedule Publish" tabs plus a "Live Until"
- * duration picker, but the API doc only confirms `PUT /tests/:id { status:
- * "live" }` — no scheduling field exists. Schedule Publish is rendered
- * disabled (same treatment as other undocumented affordances in this app);
- * the "Live Until" picker isn't built at all, since it has no grounding in
- * either the written spec or the API (unlike e.g. Test Type, which
- * requirements.md explicitly requires as a field).
+ * duration picker under BOTH tabs, but the API doc only confirms
+ * `PUT /tests/:id { status: "live" }` — no scheduling/duration field exists
+ * at all. The tabs and the Live Until options are rendered for visual
+ * completeness (Schedule Publish disabled, Live Until inert) rather than
+ * omitted outright, since they're purely decorative here and collecting
+ * input that's silently discarded would be worse than not offering it.
  */
-const TABS = [
+const PUBLISH_TABS = [
   { key: 'now', label: 'Publish Now', enabled: true },
   { key: 'schedule', label: 'Schedule Publish', enabled: false },
 ] as const
 
-export function PublishPanel({
-  testId,
-  testName,
-  isAlreadyLive,
-  canPublish,
-  disabledReason,
-}: PublishPanelProps) {
-  const navigate = useNavigate()
-  const publishTest = usePublishTest(testId)
-  const [activeTab, setActiveTab] = useState<(typeof TABS)[number]['key']>('now')
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
-  const [isSuccessOpen, setIsSuccessOpen] = useState(false)
+const LIVE_UNTIL_OPTIONS = [
+  'Always Available',
+  '1 Week',
+  '2 Weeks',
+  '3 Weeks',
+  '1 Month',
+  'Custom Duration',
+]
+
+export function PublishPanel({ isAlreadyLive }: PublishPanelProps) {
+  const [activeTab, setActiveTab] = useState<(typeof PUBLISH_TABS)[number]['key']>('now')
 
   if (isAlreadyLive) {
     return <Alert tone="success">This test is already live.</Alert>
   }
 
-  const handleConfirmPublish = () => {
-    publishTest.mutate(undefined, {
-      onSuccess: () => {
-        setIsConfirmOpen(false)
-        setIsSuccessOpen(true)
-      },
-    })
-  }
-
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <div
         role="tablist"
         aria-label="Publish options"
-        className="inline-flex gap-1 rounded-md bg-neutral-100 p-1"
+        className="inline-flex w-fit rounded-md border border-neutral-200 p-1"
       >
-        {TABS.map((tab) => (
+        {PUBLISH_TABS.map((tab) => (
           <button
             key={tab.key}
             type="button"
@@ -69,54 +51,31 @@ export function PublishPanel({
             disabled={!tab.enabled}
             title={tab.enabled ? undefined : `${tab.label} isn't available yet`}
             onClick={() => tab.enabled && setActiveTab(tab.key)}
-            className={cn(
-              'rounded px-3 py-1.5 text-sm font-medium transition-colors',
-              activeTab === tab.key ? 'bg-white text-brand-700 shadow-card' : 'text-neutral-500',
-              !tab.enabled && 'cursor-not-allowed opacity-50',
-            )}
+            className={
+              activeTab === tab.key
+                ? 'rounded px-3 py-1.5 text-sm font-semibold text-neutral-900'
+                : 'cursor-not-allowed rounded px-3 py-1.5 text-sm font-medium text-neutral-400'
+            }
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      {!canPublish && disabledReason && <Alert tone="warning">{disabledReason}</Alert>}
-
-      <div className="flex justify-end">
-        <Button type="button" onClick={() => setIsConfirmOpen(true)} disabled={!canPublish}>
-          Publish Test
-        </Button>
-      </div>
-
-      <Modal isOpen={isConfirmOpen} onClose={() => setIsConfirmOpen(false)} title="Publish test">
-        <p className="text-sm text-neutral-700">
-          Publish <strong>{testName}</strong>? It will become live and visible on the platform.
+      <fieldset disabled title="Scheduling isn't available yet — no API field is documented for it.">
+        <legend className="text-sm font-medium text-neutral-800">Live Until</legend>
+        <p className="mt-1 text-sm text-neutral-500">
+          Choose how long this test should remain available on the platform.
         </p>
-        {publishTest.error && (
-          <Alert tone="danger" className="mt-4">
-            {publishTest.error.message}
-          </Alert>
-        )}
-        <div className="mt-4 flex justify-end gap-3">
-          <Button variant="secondary" size="sm" onClick={() => setIsConfirmOpen(false)}>
-            Cancel
-          </Button>
-          <Button size="sm" onClick={handleConfirmPublish} isLoading={publishTest.isPending}>
-            Confirm
-          </Button>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {LIVE_UNTIL_OPTIONS.map((option) => (
+            <label key={option} className="flex items-center gap-2 text-sm text-neutral-400">
+              <input type="radio" name="live-until" disabled className="h-4 w-4" />
+              {option}
+            </label>
+          ))}
         </div>
-      </Modal>
-
-      <Modal isOpen={isSuccessOpen} onClose={() => navigate(paths.dashboard)} title="Test published">
-        <p className="text-sm text-neutral-700">
-          <strong>{testName}</strong> is now live.
-        </p>
-        <div className="mt-4 flex justify-end">
-          <Button size="sm" onClick={() => navigate(paths.dashboard)}>
-            Go to Dashboard
-          </Button>
-        </div>
-      </Modal>
+      </fieldset>
     </div>
   )
 }

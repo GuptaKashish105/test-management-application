@@ -79,9 +79,10 @@ export function MultiSelect({
         aria-describedby={error ? errorId : undefined}
         onClick={() => setIsOpen((open) => !open)}
         className={cn(
-          'flex min-h-11 w-full flex-wrap items-center gap-1.5 rounded-md border border-neutral-200 bg-white px-3 py-2 text-left text-sm',
+          'flex min-h-11 w-full flex-wrap items-center gap-1.5 rounded-md border border-neutral-200 bg-white px-3 py-2 text-left text-sm transition-colors',
+          'hover:border-neutral-300',
           'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-500',
-          'disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500',
+          'disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500 disabled:hover:border-neutral-200',
           error && 'border-danger-500',
         )}
       >

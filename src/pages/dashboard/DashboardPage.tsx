@@ -1,6 +1,6 @@
 import { paths } from '@app/router/paths'
 import { PageContainer } from '@components/layout'
-import { Alert, Button, Input, LinkButton, Modal, Spinner } from '@components/ui'
+import { Alert, Button, Input, LinkButton, LoadingState, Modal } from '@components/ui'
 import { useTests } from '@features/tests'
 import type { Test } from '@services/tests'
 import { useMemo, useState } from 'react'
@@ -40,12 +40,7 @@ export function DashboardPage() {
       </div>
 
       <div className="mt-6">
-        {isLoading && (
-          <div className="flex items-center justify-center gap-2 py-16 text-neutral-500">
-            <Spinner />
-            <span>Loading tests…</span>
-          </div>
-        )}
+        {isLoading && <LoadingState message="Loading tests…" />}
 
         {isError && (
           <Alert tone="danger">

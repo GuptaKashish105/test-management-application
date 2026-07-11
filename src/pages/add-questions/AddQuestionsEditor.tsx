@@ -1,6 +1,6 @@
 import { paths } from '@app/router/paths'
 import { WizardLayout } from '@components/layout'
-import { Alert, Button } from '@components/ui'
+import { Alert, Breadcrumb, Button } from '@components/ui'
 import type { QuestionFormInput, QuestionRecord } from '@features/questions'
 import {
   createBlankQuestionRecord,
@@ -65,11 +65,14 @@ export function AddQuestionsEditor({
     })
   }
 
-  const selectedRecord = questions.find((q) => q.clientId === selectedClientId) ?? null
+  const selectedIndex = questions.findIndex((q) => q.clientId === selectedClientId)
+  const selectedRecord = selectedIndex >= 0 ? questions[selectedIndex] : null
   const incompleteDraftCount = questions.filter(
     (q) => q.status === 'draft' && !isQuestionComplete(q),
   ).length
   const canSaveAndContinue = questions.length > 0 && incompleteDraftCount === 0
+
+  const goToEditTest = () => navigate(paths.testEdit(testId))
 
   const handleSaveAndContinue = () => {
     const draftQuestions = questions.filter((q) => q.status === 'draft')
@@ -90,63 +93,77 @@ export function AddQuestionsEditor({
   }
 
   return (
-    <WizardLayout
-      sidebar={
-        <QuestionSidebar
-          questions={questions}
-          selectedClientId={selectedClientId}
-          onSelect={setSelectedClientId}
-          onDelete={handleDelete}
-          onAdd={handleAdd}
-        />
-      }
-      header={<TestSummaryHeader test={test} />}
-      footer={
-        <div className="flex w-full items-center justify-between gap-4">
-          <div className="text-sm text-neutral-500">
-            {questions.length === 0 && 'Add at least 1 question to continue.'}
-            {questions.length > 0 &&
-              incompleteDraftCount > 0 &&
-              `${incompleteDraftCount} question(s) still need required fields filled.`}
+    <div className="flex flex-1 flex-col">
+      <div className="border-b border-neutral-200 bg-neutral-50 px-6 py-3">
+        <Breadcrumb items={['Test Creation', 'Create Test', 'Chapter Wise']} />
+      </div>
+      <WizardLayout
+        sidebar={
+          <QuestionSidebar
+            questions={questions}
+            selectedClientId={selectedClientId}
+            onSelect={setSelectedClientId}
+            onDelete={handleDelete}
+          />
+        }
+        header={<TestSummaryHeader test={test} onEdit={goToEditTest} />}
+        footer={
+          <div className="flex w-full items-center justify-between gap-4">
+            <div className="text-sm text-neutral-500">
+              {questions.length === 0 && 'Add at least 1 question to continue.'}
+              {questions.length > 0 &&
+                incompleteDraftCount > 0 &&
+                `${incompleteDraftCount} question(s) still need required fields filled.`}
+            </div>
+            <div className="flex gap-3">
+              <Button type="button" variant="danger" onClick={goToEditTest}>
+                Edit Test Creation
+              </Button>
+              <Button
+                type="button"
+                onClick={handleSaveAndContinue}
+                disabled={!canSaveAndContinue}
+                isLoading={saveQuestions.isPending}
+              >
+                Save & Continue
+              </Button>
+            </div>
           </div>
-          <div className="flex gap-3">
-            <Button type="button" variant="secondary" onClick={() => navigate(paths.dashboard)}>
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              onClick={handleSaveAndContinue}
-              disabled={!canSaveAndContinue}
-              isLoading={saveQuestions.isPending}
-            >
-              Save & Continue
-            </Button>
-          </div>
-        </div>
-      }
-    >
-      {saveQuestions.error && (
-        <Alert tone="danger" className="mb-4">
-          {saveQuestions.error.message}
-        </Alert>
-      )}
+        }
+      >
+        {saveQuestions.error && (
+          <Alert tone="danger" className="mb-4">
+            {saveQuestions.error.message}
+          </Alert>
+        )}
 
-      {selectedRecord ? (
-        <QuestionEditorForm
-          key={selectedRecord.clientId}
-          record={selectedRecord}
-          topics={topics}
-          isLoadingTopics={isLoadingTopics}
-          onChange={handleChange}
-        />
-      ) : (
-        <div className="flex flex-col items-center gap-3 py-16 text-center text-neutral-500">
-          <p>No questions yet.</p>
-          <Button type="button" onClick={handleAdd}>
-            Add Another Question
-          </Button>
-        </div>
-      )}
-    </WizardLayout>
+        {selectedRecord ? (
+          <>
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-neutral-800">
+                Question {selectedIndex + 1}
+              </h2>
+              <Button type="button" variant="secondary" size="sm" onClick={handleAdd}>
+                Add Another Question
+              </Button>
+            </div>
+            <QuestionEditorForm
+              key={selectedRecord.clientId}
+              record={selectedRecord}
+              topics={topics}
+              isLoadingTopics={isLoadingTopics}
+              onChange={handleChange}
+            />
+          </>
+        ) : (
+          <div className="flex flex-col items-center gap-3 py-16 text-center text-neutral-500">
+            <p>No questions yet.</p>
+            <Button type="button" onClick={handleAdd}>
+              Add Another Question
+            </Button>
+          </div>
+        )}
+      </WizardLayout>
+    </div>
   )
 }

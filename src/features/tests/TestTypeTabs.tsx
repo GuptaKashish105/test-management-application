@@ -17,7 +17,7 @@ export interface TestTypeTabsProps {
  */
 export function TestTypeTabs({ value }: TestTypeTabsProps) {
   return (
-    <div role="tablist" aria-label="Test type" className="inline-flex gap-1 rounded-md bg-neutral-100 p-1">
+    <div role="tablist" aria-label="Test type" className="flex gap-2">
       {TABS.map((tab) => (
         <button
           key={tab.value}
@@ -27,9 +27,9 @@ export function TestTypeTabs({ value }: TestTypeTabsProps) {
           disabled={!tab.enabled}
           title={tab.enabled ? undefined : `${tab.label} isn't available yet`}
           className={cn(
-            'rounded px-3 py-1.5 text-sm font-medium transition-colors',
-            value === tab.value ? 'bg-white text-brand-700 shadow-card' : 'text-neutral-500',
-            !tab.enabled && 'cursor-not-allowed opacity-50',
+            'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
+            value === tab.value ? 'bg-brand-50 text-brand-700' : 'text-neutral-400',
+            !tab.enabled && 'cursor-not-allowed',
           )}
         >
           {tab.label}

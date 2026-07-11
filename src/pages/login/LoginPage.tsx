@@ -1,5 +1,5 @@
 import { paths } from '@app/router/paths'
-import { AuthLayout } from '@components/layout'
+import { AuthLayout, Logo } from '@components/layout'
 import { Alert, Button, Input } from '@components/ui'
 import type { LoginFormValues } from '@features/auth'
 import { loginSchema, useLogin } from '@features/auth'
@@ -48,7 +48,7 @@ export function LoginPage() {
   return (
     <AuthLayout>
       <div className="mb-6">
-        <p className="text-lg font-semibold text-brand-700">Preproute</p>
+        <Logo className="h-6" />
         <h1 className="mt-4 text-xl font-semibold text-neutral-900">Login</h1>
         <p className="mt-1 text-sm text-neutral-500">Use your company provided Login credentials</p>
       </div>

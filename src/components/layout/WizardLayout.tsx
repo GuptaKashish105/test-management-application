@@ -20,7 +20,9 @@ export function WizardLayout({ sidebar, header, children, footer }: WizardLayout
   return (
     <div className="flex flex-1">
       {sidebar && (
-        <aside className="w-72 shrink-0 border-r border-neutral-200 bg-white p-4">{sidebar}</aside>
+        <aside className="hidden w-72 shrink-0 border-r border-neutral-200 bg-white p-4 lg:block">
+          {sidebar}
+        </aside>
       )}
       <div className="flex flex-1 flex-col">
         {header && <div className="border-b border-neutral-200 bg-white p-6">{header}</div>}

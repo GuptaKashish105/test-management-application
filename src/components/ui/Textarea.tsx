@@ -26,9 +26,11 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-invalid={Boolean(error)}
           aria-describedby={errorId}
           className={cn(
-            'rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800',
+            'rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 transition-colors',
             'placeholder:text-neutral-500',
+            'hover:border-neutral-300',
             'focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-500',
+            'disabled:cursor-not-allowed disabled:bg-neutral-50 disabled:text-neutral-500 disabled:hover:border-neutral-200',
             error && 'border-danger-500',
             className,
           )}

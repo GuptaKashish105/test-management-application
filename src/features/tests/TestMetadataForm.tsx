@@ -148,7 +148,7 @@ export function TestMetadataForm({
 
       <div>
         <p className="text-sm font-medium text-neutral-800">Marking Scheme:</p>
-        <div className="mt-2 grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-5">
           <Input
             label="Wrong Answer"
             type="number"
@@ -167,24 +167,21 @@ export function TestMetadataForm({
             error={errors.correctMarks?.message}
             {...register('correctMarks')}
           />
+          <Input
+            label="No of Questions"
+            type="number"
+            placeholder="Ex:250 Marks"
+            error={errors.totalQuestions?.message}
+            {...register('totalQuestions')}
+          />
+          <Input
+            label="Total Marks"
+            type="number"
+            placeholder="Ex:250 Marks"
+            error={errors.totalMarks?.message}
+            {...register('totalMarks')}
+          />
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <Input
-          label="No of Questions"
-          type="number"
-          placeholder="Ex:250 Marks"
-          error={errors.totalQuestions?.message}
-          {...register('totalQuestions')}
-        />
-        <Input
-          label="Total Marks"
-          type="number"
-          placeholder="Ex:250 Marks"
-          error={errors.totalMarks?.message}
-          {...register('totalMarks')}
-        />
       </div>
 
       {submitError && <Alert tone="danger">{submitError}</Alert>}

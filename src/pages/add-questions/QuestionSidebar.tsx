@@ -1,4 +1,4 @@
-import { Badge, Button } from '@components/ui'
+import { Badge } from '@components/ui'
 import type { QuestionRecord } from '@features/questions'
 import { isQuestionComplete } from '@features/questions'
 import { cn } from '@utils/cn'
@@ -8,19 +8,14 @@ export interface QuestionSidebarProps {
   selectedClientId: string | null
   onSelect: (clientId: string) => void
   onDelete: (clientId: string) => void
-  onAdd: () => void
 }
 
-export function QuestionSidebar({
-  questions,
-  selectedClientId,
-  onSelect,
-  onDelete,
-  onAdd,
-}: QuestionSidebarProps) {
+/** "Add Another Question" lives above the editor panel (matching Figma), not in this list. */
+export function QuestionSidebar({ questions, selectedClientId, onSelect, onDelete }: QuestionSidebarProps) {
   return (
     <div className="flex h-full flex-col gap-3">
-      <p className="text-sm font-medium text-neutral-800">Total Questions: {questions.length}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Question creation</p>
+      <p className="text-sm font-medium text-neutral-800">Total Questions : {questions.length}</p>
 
       <ul className="flex flex-1 flex-col gap-1 overflow-y-auto">
         {questions.map((record, index) => {
@@ -45,8 +40,11 @@ export function QuestionSidebar({
                     complete ? 'bg-success-500' : 'bg-neutral-300',
                   )}
                 />
-                <span className="truncate">Question {index + 1}</span>
+                <span className="flex-1 truncate">Question {index + 1}</span>
                 {record.status === 'saved' && <Badge tone="success">Saved</Badge>}
+                <span aria-hidden="true" className="text-neutral-300">
+                  ›
+                </span>
               </button>
               {record.status === 'draft' && (
                 <button
@@ -62,10 +60,6 @@ export function QuestionSidebar({
           )
         })}
       </ul>
-
-      <Button type="button" variant="secondary" size="sm" onClick={onAdd}>
-        Add Another Question
-      </Button>
     </div>
   )
 }

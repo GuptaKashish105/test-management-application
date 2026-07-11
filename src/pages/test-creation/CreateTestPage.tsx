@@ -1,5 +1,6 @@
 import { paths } from '@app/router/paths'
 import { PageContainer } from '@components/layout'
+import { Breadcrumb } from '@components/ui'
 import type { TestMetadataFormInput, TestMetadataFormValues } from '@features/tests'
 import { TestMetadataForm, useCreateTest } from '@features/tests'
 import type { CreateTestPayload } from '@services/tests'
@@ -11,8 +12,9 @@ const DEFAULT_VALUES: TestMetadataFormInput = {
   subject: '',
   topics: [],
   subTopics: [],
-  difficulty: '',
-  // Figma's marking-scheme steppers show these as real starting values, not empty placeholders.
+  // Figma's empty-state screenshot shows Easy pre-selected, same as the marking-scheme
+  // steppers showing real starting values rather than nothing chosen.
+  difficulty: 'easy',
   correctMarks: 5,
   wrongMarks: -1,
   unattemptMarks: 0,
@@ -51,7 +53,11 @@ export function CreateTestPage() {
 
   return (
     <PageContainer>
-      <h1 className="text-xl font-semibold text-neutral-900">Create Test</h1>
+      {/* Figma has no visible page heading here (just the breadcrumb) — kept visually
+          matching, but every page needs a real h1 for screen-reader/document-outline
+          navigation, so it's present but visually hidden. */}
+      <h1 className="sr-only">Create Test</h1>
+      <Breadcrumb items={['Test Creation', 'Create Test', 'Chapter Wise']} />
       <div className="mt-6 max-w-4xl rounded-lg border border-neutral-200 bg-white p-6">
         <TestMetadataForm
           defaultValues={DEFAULT_VALUES}

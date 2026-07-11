@@ -11,7 +11,7 @@ export interface ModalProps {
   className?: string
 }
 
-/** Generic accessible dialog primitive — reused by ConfirmDialog and future modals (e.g. Edit Test). */
+/** Generic accessible dialog primitive — reused across the app for delete/publish confirmations and the publish-success message. */
 export function Modal({ isOpen, onClose, title, children, className }: ModalProps) {
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)

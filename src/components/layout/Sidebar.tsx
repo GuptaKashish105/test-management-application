@@ -2,6 +2,8 @@ import { paths } from '@app/router/paths'
 import { cn } from '@utils/cn'
 import { NavLink } from 'react-router-dom'
 
+import { Logo } from './Logo'
+
 const navItems = [
   { label: 'Dashboard', to: paths.dashboard },
   { label: 'Test Creation', to: paths.testCreate },
@@ -12,8 +14,10 @@ const navItems = [
 
 export function Sidebar() {
   return (
-    <aside className="flex w-60 shrink-0 flex-col border-r border-neutral-200 bg-white p-4">
-      <div className="px-2 py-3 text-lg font-semibold text-brand-700">Preproute</div>
+    <aside className="hidden w-60 shrink-0 flex-col border-r border-neutral-200 bg-white p-4 lg:flex">
+      <div className="px-2 py-3">
+        <Logo className="h-6" />
+      </div>
       <nav className="mt-4 flex flex-col gap-1">
         {navItems.map((item) => (
           <NavLink

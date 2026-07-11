@@ -20,7 +20,11 @@ export function QuestionsReview({ questions }: QuestionsReviewProps) {
   return (
     <ol className="flex flex-col gap-4">
       {questions.map((question, index) => (
-        <li key={question.id} className="rounded-lg border border-neutral-200 bg-white p-4">
+        <li
+          key={question.id}
+          id={`question-${question.id}`}
+          className="scroll-mt-6 rounded-lg border border-neutral-200 bg-white p-4"
+        >
           <p className="text-sm font-medium text-neutral-900">
             {index + 1}. {question.question}
           </p>

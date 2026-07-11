@@ -1,5 +1,5 @@
 import { paths } from '@app/router/paths'
-import { Alert, Spinner } from '@components/ui'
+import { Alert, LoadingState } from '@components/ui'
 import { createBlankQuestionRecord, questionToRecord, useFetchExistingQuestions } from '@features/questions'
 import { useResolvedTestTopics, useTest } from '@features/tests'
 import { Navigate, useParams } from 'react-router-dom'
@@ -28,12 +28,7 @@ export function AddQuestionsPage() {
   const loadError = testQuery.error ?? (needsExistingQuestions ? existingQuestionsQuery.error : null)
 
   if (isLoading) {
-    return (
-      <div className="flex flex-1 items-center justify-center gap-2 p-16 text-neutral-500">
-        <Spinner />
-        <span>Loading questions…</span>
-      </div>
-    )
+    return <LoadingState message="Loading questions…" fullHeight />
   }
 
   if (loadError || !testQuery.data) {

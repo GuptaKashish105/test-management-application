@@ -73,7 +73,7 @@ describe('AddQuestionsEditor', () => {
   it('starts with one blank (incomplete) draft question and Save & Continue disabled', () => {
     renderEditor()
 
-    expect(screen.getByText('Question 1')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Question 1' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Save & Continue' })).toBeDisabled()
     expect(screen.getByText('1 question(s) still need required fields filled.')).toBeInTheDocument()
   })
@@ -84,8 +84,8 @@ describe('AddQuestionsEditor', () => {
 
     await user.click(screen.getByRole('button', { name: 'Add Another Question' }))
 
-    expect(screen.getByText('Question 1')).toBeInTheDocument()
-    expect(screen.getByText('Question 2')).toBeInTheDocument()
+    expect(screen.getAllByText('Question 1')).toHaveLength(1)
+    expect(screen.getByRole('heading', { name: 'Question 2' })).toBeInTheDocument()
     expect(screen.getByLabelText('Question')).toHaveValue('')
   })
 
@@ -94,7 +94,7 @@ describe('AddQuestionsEditor', () => {
     renderEditor()
 
     await user.click(screen.getByRole('button', { name: 'Add Another Question' }))
-    expect(screen.getByText('Question 2')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Question 2' })).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Delete Question 2' }))
     expect(screen.queryByText('Question 2')).not.toBeInTheDocument()
