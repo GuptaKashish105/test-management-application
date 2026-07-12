@@ -25,7 +25,7 @@ describe('QuestionsReview', () => {
   it('renders each question with all 4 options and highlights the correct one', () => {
     render(<QuestionsReview questions={[question]} />)
 
-    expect(screen.getByText('1. What is 2 + 2?')).toBeInTheDocument()
+    expect(document.getElementById('question-question-1')).toHaveTextContent('1. What is 2 + 2?')
     expect(screen.getByText('3')).toBeInTheDocument()
     expect(screen.getByText('5')).toBeInTheDocument()
     expect(screen.getByText('6')).toBeInTheDocument()
@@ -47,7 +47,7 @@ describe('QuestionsReview', () => {
         questions={[question, { ...question, id: 'question-2', question: 'Second question' }]}
       />,
     )
-    expect(screen.getByText('1. What is 2 + 2?')).toBeInTheDocument()
-    expect(screen.getByText('2. Second question')).toBeInTheDocument()
+    expect(document.getElementById('question-question-1')).toHaveTextContent('1. What is 2 + 2?')
+    expect(document.getElementById('question-question-2')).toHaveTextContent('2. Second question')
   })
 })

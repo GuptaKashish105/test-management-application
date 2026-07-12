@@ -25,9 +25,11 @@ export function QuestionsReview({ questions }: QuestionsReviewProps) {
           id={`question-${question.id}`}
           className="scroll-mt-6 rounded-lg border border-neutral-200 bg-white p-4"
         >
-          <p className="text-sm font-medium text-neutral-900">
-            {index + 1}. {question.question}
-          </p>
+          <div className="flex items-start gap-0 text-sm font-medium text-neutral-900">
+            <span>{index + 1}. </span>
+            {/* Question text is authored via the rich text editor and stored as HTML. */}
+            <span className="[&_p]:m-0" dangerouslySetInnerHTML={{ __html: question.question }} />
+          </div>
           <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {OPTION_KEYS.map((key) => {
               const isCorrect = question.correctOption === key

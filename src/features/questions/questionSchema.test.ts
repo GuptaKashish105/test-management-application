@@ -27,6 +27,19 @@ describe('questionSchema', () => {
     expect(result.success).toBe(false)
   })
 
+  it('rejects rich-text markup that has no visible text', () => {
+    const result = questionSchema.safeParse({ ...validInput, question: '<p><br></p>' })
+    expect(result.success).toBe(false)
+  })
+
+  it('accepts rich-text markup that has visible text', () => {
+    const result = questionSchema.safeParse({
+      ...validInput,
+      question: '<p><strong>What</strong> is 2 + 2?</p>',
+    })
+    expect(result.success).toBe(true)
+  })
+
   it('requires all 4 options to be non-empty', () => {
     const result = questionSchema.safeParse({ ...validInput, option3: '' })
     expect(result.success).toBe(false)

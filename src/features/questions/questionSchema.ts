@@ -4,6 +4,21 @@ const CORRECT_OPTION_VALUES = ['option1', 'option2', 'option3', 'option4'] as co
 type CorrectOptionValue = (typeof CORRECT_OPTION_VALUES)[number]
 
 /**
+ * `question` is authored via the rich text editor and stored as HTML, so
+ * "is it empty" can't be a plain string length check — an empty editor still
+ * serializes to markup like `<p><br></p>`. Strips tags/entities down to
+ * visible text before checking.
+ */
+function isHtmlEmpty(html: string): boolean {
+  return (
+    html
+      .replace(/<[^>]*>/g, '')
+      .replace(/&nbsp;/g, ' ')
+      .trim().length === 0
+  )
+}
+
+/**
  * Only the fields that matter for validity/completeness — question text, 4
  * options, and which one is correct (all 4 options are already required
  * non-empty, so "correct option references a filled option" holds by
@@ -11,7 +26,7 @@ type CorrectOptionValue = (typeof CORRECT_OPTION_VALUES)[number]
  * explicitly optional per requirements.md.
  */
 export const questionSchema = z.object({
-  question: z.string().trim().min(1, 'Question text is required'),
+  question: z.string().refine((value) => !isHtmlEmpty(value), 'Question text is required'),
   option1: z.string().trim().min(1, 'Required'),
   option2: z.string().trim().min(1, 'Required'),
   option3: z.string().trim().min(1, 'Required'),

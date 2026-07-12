@@ -25,6 +25,15 @@ export function createBlankQuestionRecord(): QuestionRecord {
   }
 }
 
+/** Used by CSV import to turn each parsed, already-validated row into a draft record. */
+export function createQuestionRecordFromInput(input: QuestionFormInput): QuestionRecord {
+  return {
+    ...input,
+    clientId: crypto.randomUUID(),
+    status: 'draft',
+  }
+}
+
 /**
  * topic/sub-topic/media URL aren't part of the documented bulk-create
  * schema, so they were never sent — a rehydrated question has no value to

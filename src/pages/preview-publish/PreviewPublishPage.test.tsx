@@ -129,7 +129,7 @@ describe('PreviewPublishPage', () => {
     mockUseFetchExistingQuestions({ data: [question], isLoading: false, error: null })
 
     renderPage()
-    expect(screen.getByText('1. What is 2 + 2?')).toBeInTheDocument()
+    expect(document.getElementById('question-question-1')).toHaveTextContent('1. What is 2 + 2?')
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeEnabled()
   })
 

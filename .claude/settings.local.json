@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 *)",
+      "Bash(pip3 install *)",
+      "Bash(npm run *)",
+      "Bash(git mv *)",
+      "Bash(mv src/features/auth/authContext.ts src/features/auth/authContextInstance.ts)",
+      "Bash(echo \"EXIT CODE: $?\")",
+      "Bash(npm test *)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(sed -n '/Page 5/,/^---/p' docs/assignment/requirements.md)",
+      "Bash(sed -n '/10\\\\. Publish Test/,/12\\\\. Fetch Bulk/p' docs/api/api-documentation.md)",
+      "Bash(rm -rf dist)",
+      "Skill(run)",
+      "Bash(npm ping *)",
+      "Bash(npx --yes playwright@latest install chromium)",
+      "Bash(npm install *)",
+      "Bash(lsof *)",
+      "Bash(sed -i '' \"s/page.getByLabel\\('Question'\\).fill/page.getByRole\\('textbox', { name: 'Question' }\\).fill/\" \"/Users/kashishgupta/Documents/kashish/PROJECTS/test-management-application/.qa-capture.mjs\")",
+      "Bash(node .qa-capture.mjs)",
+      "Bash(rm -f .qa-capture.mjs .qa-capture-edit.mjs .qa-capture-modal.mjs)",
+      "Bash(npm uninstall *)",
+      "Bash(node .smoke-test.mjs)",
+      "Bash(node .smoke-debug.mjs)",
+      "Bash(xargs -r kill)",
+      "Bash(disown)",
+      "Read(//private/tmp/**)",
+      "Bash(VITE_DEMO_MODE=false nohup npm run dev)",
+      "Bash(npx --yes knip)",
+      "Bash(node -e ' *)",
+      "Bash(npx vitest *)",
+      "Bash(npx eslint *)",
+      "Bash(npx playwright *)",
+      "Bash(node .polish-check.mjs)",
+      "Bash(npx prettier *)"
+    ]
+  }
+}

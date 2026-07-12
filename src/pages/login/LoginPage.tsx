@@ -1,5 +1,5 @@
 import { paths } from '@app/router/paths'
-import { AuthLayout, Logo } from '@components/layout'
+import { AuthLayout, DemoModeBanner, Logo } from '@components/layout'
 import { Alert, Button, Input } from '@components/ui'
 import type { LoginFormValues } from '@features/auth'
 import { loginSchema, useLogin } from '@features/auth'
@@ -90,6 +90,8 @@ export function LoginPage() {
           Login
         </Button>
       </form>
+
+      <DemoModeBanner />
     </AuthLayout>
   )
 }

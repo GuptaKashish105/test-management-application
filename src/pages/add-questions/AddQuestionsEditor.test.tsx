@@ -96,7 +96,7 @@ describe('AddQuestionsEditor', () => {
 
     expect(screen.getAllByText('Question 1')).toHaveLength(1)
     expect(screen.getByRole('heading', { name: 'Question 2' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Question')).toHaveValue('')
+    expect(screen.getByLabelText('Question')).toBeEmptyDOMElement()
   })
 
   it('deleting a draft question removes it from the sidebar', async () => {
@@ -154,7 +154,7 @@ describe('AddQuestionsEditor', () => {
 
     expect(screen.getByText('Saved')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Delete Question 1' })).not.toBeInTheDocument()
-    expect(screen.getByLabelText('Question')).toBeDisabled()
+    expect(screen.getByLabelText('Question')).toHaveAttribute('aria-disabled', 'true')
   })
 
   it('opens the edit-test modal from either the pencil icon or the footer button', async () => {
@@ -168,5 +168,55 @@ describe('AddQuestionsEditor', () => {
 
     await user.click(screen.getByRole('button', { name: 'Edit Test Creation' }))
     expect(screen.getByRole('dialog', { name: 'Edit test test-1' })).toBeInTheDocument()
+  })
+
+  it('imports questions from an uploaded CSV file alongside manual entry', async () => {
+    const user = userEvent.setup()
+    renderEditor()
+
+    const csvContent = [
+      'question,option1,option2,option3,option4,correct_option,explanation,difficulty',
+      'Uploaded question one?,a,b,c,d,option1,,',
+      'Uploaded question two?,a,b,c,d,option2,,',
+    ].join('\n')
+    const file = new File([csvContent], 'questions.csv', { type: 'text/csv' })
+
+    await user.upload(screen.getByLabelText('Upload CSV file'), file)
+
+    expect(await screen.findByText('Imported 2 questions from CSV.')).toBeInTheDocument()
+    // The first imported row is auto-selected into the editor…
+    expect(screen.getByRole('heading', { name: 'Question 2' })).toBeInTheDocument()
+    // …and both imported rows show up in the sidebar alongside the original blank question.
+    expect(screen.getByText('Question 3')).toBeInTheDocument()
+  })
+
+  it('reports skipped rows without blocking the questions that did import', async () => {
+    const user = userEvent.setup()
+    renderEditor()
+
+    const csvContent = [
+      'question,option1,option2,option3,option4,correct_option,explanation,difficulty',
+      'Valid uploaded question?,a,b,c,d,option1,,',
+      ',a,b,c,d,option1,,',
+    ].join('\n')
+    const file = new File([csvContent], 'questions.csv', { type: 'text/csv' })
+
+    await user.upload(screen.getByLabelText('Upload CSV file'), file)
+
+    expect(await screen.findByText('Imported 1 question from CSV.')).toBeInTheDocument()
+    expect(screen.getByText(/Row 3/)).toBeInTheDocument()
+  })
+
+  it('previews an uploaded image immediately after selecting it', async () => {
+    const user = userEvent.setup()
+    renderEditor()
+
+    expect(screen.queryByAltText('Question media preview')).not.toBeInTheDocument()
+
+    const file = new File(['fake-image-bytes'], 'diagram.png', { type: 'image/png' })
+    await user.upload(screen.getByLabelText('Upload Image'), file)
+
+    const preview = await screen.findByAltText('Question media preview')
+    expect(preview).toHaveAttribute('src', expect.stringMatching(/^data:image\/png/))
   })
 })
