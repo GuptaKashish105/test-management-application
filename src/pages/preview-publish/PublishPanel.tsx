@@ -62,7 +62,10 @@ export function PublishPanel({ isAlreadyLive }: PublishPanelProps) {
         ))}
       </div>
 
-      <fieldset disabled title="Scheduling isn't available yet — no API field is documented for it.">
+      <fieldset
+        disabled
+        title="Scheduling isn't available yet — no API field is documented for it."
+      >
         <legend className="text-sm font-medium text-neutral-800">Live Until</legend>
         <p className="mt-1 text-sm text-neutral-500">
           Choose how long this test should remain available on the platform.

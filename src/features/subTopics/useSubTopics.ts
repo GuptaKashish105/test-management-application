@@ -3,8 +3,7 @@ import { subTopicsApi } from '@services/subTopics'
 import { useQuery } from '@tanstack/react-query'
 import type { ApiError } from '@typings/api'
 
-export const subTopicsQueryKey = (topicIds: string[]) =>
-  ['subTopics', [...topicIds].sort()] as const
+const subTopicsQueryKey = (topicIds: string[]) => ['subTopics', [...topicIds].sort()] as const
 
 /** Disabled until at least one topic is selected. */
 export function useSubTopics(topicIds: string[]) {

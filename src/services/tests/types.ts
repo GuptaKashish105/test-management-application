@@ -13,7 +13,7 @@ export interface RawTestListItem {
  * PYQ/Mock Test tabs exist visually but their wire values are unconfirmed, so
  * this stays a single-value literal until that's verified.
  */
-export type TestType = 'chapterwise'
+type TestType = 'chapterwise'
 
 export type TestDifficulty = 'easy' | 'medium' | 'difficult'
 

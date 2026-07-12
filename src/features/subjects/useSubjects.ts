@@ -3,7 +3,7 @@ import { subjectsApi } from '@services/subjects'
 import { useQuery } from '@tanstack/react-query'
 import type { ApiError } from '@typings/api'
 
-export const subjectsQueryKey = ['subjects'] as const
+const subjectsQueryKey = ['subjects'] as const
 
 export function useSubjects() {
   return useQuery<Subject[], ApiError>({

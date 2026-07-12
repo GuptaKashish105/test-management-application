@@ -3,7 +3,7 @@ import type { Question } from '@services/questions'
 import type { QuestionFormInput } from './questionSchema'
 import { EMPTY_QUESTION_FORM_VALUES } from './questionSchema'
 
-export type QuestionStatus = 'draft' | 'saved'
+type QuestionStatus = 'draft' | 'saved'
 
 /**
  * A question as staged in the Add Questions page. 'draft' questions exist

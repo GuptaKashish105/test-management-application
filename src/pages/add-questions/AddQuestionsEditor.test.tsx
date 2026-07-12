@@ -13,6 +13,16 @@ vi.mock('@features/questions', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@features/questions')>()
   return { ...actual, useSaveQuestions: vi.fn() }
 })
+vi.mock('@features/tests', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@features/tests')>()
+  return {
+    ...actual,
+    // Real EditTestModal fetches over react-query, which needs a QueryClientProvider this
+    // suite doesn't set up — stub it down to a dialog that reveals the testId it was given.
+    EditTestModal: ({ testId }: { testId: string | null }) =>
+      testId ? <div role="dialog" aria-label={`Edit test ${testId}`} /> : null,
+  }
+})
 
 const mockedUseSubTopics = vi.mocked(useSubTopics)
 const mockedUseSaveQuestions = vi.mocked(useSaveQuestions)
@@ -145,5 +155,18 @@ describe('AddQuestionsEditor', () => {
     expect(screen.getByText('Saved')).toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Delete Question 1' })).not.toBeInTheDocument()
     expect(screen.getByLabelText('Question')).toBeDisabled()
+  })
+
+  it('opens the edit-test modal from either the pencil icon or the footer button', async () => {
+    const user = userEvent.setup()
+    renderEditor()
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Edit test details' }))
+    expect(screen.getByRole('dialog', { name: 'Edit test test-1' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Edit Test Creation' }))
+    expect(screen.getByRole('dialog', { name: 'Edit test test-1' })).toBeInTheDocument()
   })
 })

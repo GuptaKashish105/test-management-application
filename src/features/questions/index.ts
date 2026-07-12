@@ -1,16 +1,8 @@
 export { QuestionEditorForm } from './QuestionEditorForm'
-export type { QuestionRecord, QuestionStatus } from './questionRecord'
-export {
-  createBlankQuestionRecord,
-  questionToRecord,
-} from './questionRecord'
-export type { CorrectOptionValue, QuestionFormInput, QuestionFormValues } from './questionSchema'
-export {
-  CORRECT_OPTION_VALUES,
-  EMPTY_QUESTION_FORM_VALUES,
-  isQuestionComplete,
-  questionSchema,
-} from './questionSchema'
-export { existingQuestionsQueryKey, useFetchExistingQuestions } from './useFetchExistingQuestions'
-export type { SaveQuestionsInput } from './useSaveQuestions'
+export type { QuestionRecord } from './questionRecord'
+export { createBlankQuestionRecord, questionToRecord } from './questionRecord'
+export type { QuestionFormInput } from './questionSchema'
+export { isQuestionComplete } from './questionSchema'
+export { QuestionSidebarHeader } from './QuestionSidebarHeader'
+export { useFetchExistingQuestions } from './useFetchExistingQuestions'
 export { useSaveQuestions } from './useSaveQuestions'

@@ -1,7 +1,7 @@
 import { cn } from '@utils/cn'
 import { useId } from 'react'
 
-export interface RadioGroupOption {
+interface RadioGroupOption {
   value: string
   label: string
 }

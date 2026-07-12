@@ -1,7 +1,7 @@
 import { cn } from '@utils/cn'
 import { forwardRef, type SelectHTMLAttributes, useId } from 'react'
 
-export interface SelectOption {
+interface SelectOption {
   value: string
   label: string
 }

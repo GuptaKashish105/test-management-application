@@ -4,14 +4,18 @@ import { AddQuestionsPage } from '@pages/add-questions'
 import { DashboardPage } from '@pages/dashboard'
 import { LoginPage } from '@pages/login'
 import { PreviewPublishPage } from '@pages/preview-publish'
-import { CreateTestPage, EditTestPage } from '@pages/test-creation'
+import { CreateTestPage } from '@pages/test-creation'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { paths } from './paths'
 import { ProtectedRoute } from './ProtectedRoute'
 import { PublicOnlyRoute } from './PublicOnlyRoute'
 
-/** Every documented page (Login, Dashboard, Create/Edit Test, Add Questions, Preview & Publish) is implemented. */
+/**
+ * Every documented page (Login, Dashboard, Create Test, Add Questions, Preview & Publish) is
+ * implemented. Edit Test has no route of its own — Figma renders it as a modal, so it's mounted
+ * directly on whichever page triggers it (see `EditTestModal`).
+ */
 export function AppRouter() {
   return (
     <Routes>
@@ -43,17 +47,6 @@ export function AppRouter() {
           <ProtectedRoute>
             <AppShell>
               <CreateTestPage />
-            </AppShell>
-          </ProtectedRoute>
-        }
-      />
-
-      <Route
-        path={paths.testEdit(':testId')}
-        element={
-          <ProtectedRoute>
-            <AppShell>
-              <EditTestPage />
             </AppShell>
           </ProtectedRoute>
         }

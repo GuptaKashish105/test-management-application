@@ -1,3 +1,4 @@
+import { QuestionSidebarHeader } from '@features/questions'
 import type { Question } from '@services/questions'
 
 export interface QuestionsSidebarProps {
@@ -8,8 +9,7 @@ export interface QuestionsSidebarProps {
 export function QuestionsSidebar({ questions }: QuestionsSidebarProps) {
   return (
     <div className="flex h-full flex-col gap-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Question creation</p>
-      <p className="text-sm font-medium text-neutral-800">Total Questions : {questions.length}</p>
+      <QuestionSidebarHeader count={questions.length} />
 
       <ul className="flex flex-1 flex-col gap-1 overflow-y-auto">
         {questions.map((question, index) => (

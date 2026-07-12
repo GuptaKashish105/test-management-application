@@ -1,6 +1,6 @@
 import { Badge } from '@components/ui'
 import type { QuestionRecord } from '@features/questions'
-import { isQuestionComplete } from '@features/questions'
+import { isQuestionComplete, QuestionSidebarHeader } from '@features/questions'
 import { cn } from '@utils/cn'
 
 export interface QuestionSidebarProps {
@@ -11,11 +11,15 @@ export interface QuestionSidebarProps {
 }
 
 /** "Add Another Question" lives above the editor panel (matching Figma), not in this list. */
-export function QuestionSidebar({ questions, selectedClientId, onSelect, onDelete }: QuestionSidebarProps) {
+export function QuestionSidebar({
+  questions,
+  selectedClientId,
+  onSelect,
+  onDelete,
+}: QuestionSidebarProps) {
   return (
     <div className="flex h-full flex-col gap-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Question creation</p>
-      <p className="text-sm font-medium text-neutral-800">Total Questions : {questions.length}</p>
+      <QuestionSidebarHeader count={questions.length} />
 
       <ul className="flex flex-1 flex-col gap-1 overflow-y-auto">
         {questions.map((record, index) => {
@@ -30,7 +34,9 @@ export function QuestionSidebar({ questions, selectedClientId, onSelect, onDelet
                 aria-current={isSelected}
                 className={cn(
                   'flex flex-1 items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm',
-                  isSelected ? 'bg-brand-50 text-brand-700' : 'text-neutral-700 hover:bg-neutral-50',
+                  isSelected
+                    ? 'bg-brand-50 text-brand-700'
+                    : 'text-neutral-700 hover:bg-neutral-50',
                 )}
               >
                 <span

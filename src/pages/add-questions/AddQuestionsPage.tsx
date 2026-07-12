@@ -1,6 +1,10 @@
 import { paths } from '@app/router/paths'
 import { Alert, LoadingState } from '@components/ui'
-import { createBlankQuestionRecord, questionToRecord, useFetchExistingQuestions } from '@features/questions'
+import {
+  createBlankQuestionRecord,
+  questionToRecord,
+  useFetchExistingQuestions,
+} from '@features/questions'
 import { useResolvedTestTopics, useTest } from '@features/tests'
 import { Navigate, useParams } from 'react-router-dom'
 
@@ -25,7 +29,8 @@ export function AddQuestionsPage() {
   const needsExistingQuestions = Boolean(testQuery.data && testQuery.data.questionIds.length > 0)
   const isLoading =
     testQuery.isLoading || (needsExistingQuestions && existingQuestionsQuery.isLoading)
-  const loadError = testQuery.error ?? (needsExistingQuestions ? existingQuestionsQuery.error : null)
+  const loadError =
+    testQuery.error ?? (needsExistingQuestions ? existingQuestionsQuery.error : null)
 
   if (isLoading) {
     return <LoadingState message="Loading questions…" fullHeight />

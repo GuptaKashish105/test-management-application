@@ -9,6 +9,15 @@ import { DashboardPage } from './DashboardPage'
 
 vi.mock('@features/tests', () => ({
   useTests: vi.fn(),
+  // Real EditTestModal fetches over react-query, which needs a QueryClientProvider this
+  // suite doesn't set up — stub it down to a dialog that reveals the testId it was given,
+  // enough to verify Dashboard wires the Edit action to the right test.
+  EditTestModal: ({ testId, onClose }: { testId: string | null; onClose: () => void }) =>
+    testId ? (
+      <div role="dialog" aria-label={`Edit test ${testId}`}>
+        <button onClick={onClose}>Close edit modal</button>
+      </div>
+    ) : null,
 }))
 
 const mockedUseTests = vi.mocked(useTests)
@@ -125,6 +134,36 @@ describe('DashboardPage', () => {
     expect(screen.getByText(/isn't available yet/)).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Close' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('also closes the delete dialog via the X button', async () => {
+    mockUseTests({ data: sampleTests, isLoading: false, isError: false, error: null })
+
+    const user = userEvent.setup()
+    renderDashboard()
+
+    const row = screen.getByText('Algebra Basics').closest('tr')
+    await user.click(within(row as HTMLElement).getByRole('button', { name: 'Delete' }))
+    expect(screen.getByRole('dialog', { name: 'Delete test' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Close modal' }))
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it('opens the edit modal for the clicked test, as a modal rather than a navigation', async () => {
+    mockUseTests({ data: sampleTests, isLoading: false, isError: false, error: null })
+
+    const user = userEvent.setup()
+    renderDashboard()
+
+    const row = screen.getByText('Algebra Basics').closest('tr')
+    expect(row).not.toBeNull()
+    await user.click(within(row as HTMLElement).getByRole('button', { name: 'Edit' }))
+
+    expect(screen.getByRole('dialog', { name: 'Edit test test-1' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Close edit modal' }))
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 })

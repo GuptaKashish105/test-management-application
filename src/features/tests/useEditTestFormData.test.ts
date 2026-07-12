@@ -41,7 +41,9 @@ describe('computeUnresolvedWarnings', () => {
       subTopicsResolvedCount: 0,
       type: 'chapterwise',
     })
-    expect(warnings).toEqual(['Some topics could not be matched — please review the Topic selection.'])
+    expect(warnings).toEqual([
+      'Some topics could not be matched — please review the Topic selection.',
+    ])
   })
 
   it('warns when fewer sub-topics resolve than were returned by the API', () => {

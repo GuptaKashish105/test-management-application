@@ -8,7 +8,7 @@ import {
   QuestionEditorForm,
   useSaveQuestions,
 } from '@features/questions'
-import { TestSummaryHeader } from '@features/tests'
+import { EditTestModal, TestSummaryHeader } from '@features/tests'
 import type { TestDetail } from '@services/tests'
 import type { Topic } from '@services/topics'
 import { useCallback, useState } from 'react'
@@ -38,6 +38,7 @@ export function AddQuestionsEditor({
   const [selectedClientId, setSelectedClientId] = useState<string | null>(
     initialQuestions[0]?.clientId ?? null,
   )
+  const [isEditingTest, setIsEditingTest] = useState(false)
 
   const handleChange = useCallback(
     (values: QuestionFormInput) => {
@@ -72,8 +73,6 @@ export function AddQuestionsEditor({
   ).length
   const canSaveAndContinue = questions.length > 0 && incompleteDraftCount === 0
 
-  const goToEditTest = () => navigate(paths.testEdit(testId))
-
   const handleSaveAndContinue = () => {
     const draftQuestions = questions.filter((q) => q.status === 'draft')
     const existingPersistedIds = questions
@@ -106,7 +105,7 @@ export function AddQuestionsEditor({
             onDelete={handleDelete}
           />
         }
-        header={<TestSummaryHeader test={test} onEdit={goToEditTest} />}
+        header={<TestSummaryHeader test={test} onEdit={() => setIsEditingTest(true)} />}
         footer={
           <div className="flex w-full items-center justify-between gap-4">
             <div className="text-sm text-neutral-500">
@@ -116,7 +115,7 @@ export function AddQuestionsEditor({
                 `${incompleteDraftCount} question(s) still need required fields filled.`}
             </div>
             <div className="flex gap-3">
-              <Button type="button" variant="danger" onClick={goToEditTest}>
+              <Button type="button" variant="danger" onClick={() => setIsEditingTest(true)}>
                 Edit Test Creation
               </Button>
               <Button
@@ -164,6 +163,11 @@ export function AddQuestionsEditor({
           </div>
         )}
       </WizardLayout>
+
+      <EditTestModal
+        testId={isEditingTest ? testId : null}
+        onClose={() => setIsEditingTest(false)}
+      />
     </div>
   )
 }

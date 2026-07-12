@@ -1,7 +1,7 @@
 /** Only `type: "mcq"` is shown in the API doc's example — the only supported question type. */
-export type QuestionType = 'mcq'
+type QuestionType = 'mcq'
 
-export type CorrectOption = 'option1' | 'option2' | 'option3' | 'option4'
+type CorrectOption = 'option1' | 'option2' | 'option3' | 'option4'
 
 /**
  * Matches the documented `POST /questions/bulk` item shape exactly. The doc's

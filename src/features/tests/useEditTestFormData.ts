@@ -54,7 +54,8 @@ export function useEditTestFormData(testId: string) {
     testQuery.isLoading || isLoadingTopics || (topicIds.length > 0 && subTopicsQuery.isLoading)
 
   const isError = testQuery.isError || isTopicsError || subTopicsQuery.isError
-  const errorMessage = testQuery.error?.message ?? topicsErrorMessage ?? subTopicsQuery.error?.message ?? null
+  const errorMessage =
+    testQuery.error?.message ?? topicsErrorMessage ?? subTopicsQuery.error?.message ?? null
 
   const defaultValues: TestMetadataFormInput | null = testQuery.data
     ? {
@@ -90,7 +91,9 @@ export function computeUnresolvedWarnings(input: WarningInputs): string[] {
   const warnings: string[] = []
 
   if (!input.subjectResolved) {
-    warnings.push(`Could not match subject "${input.subjectName}" to a known subject — please reselect it.`)
+    warnings.push(
+      `Could not match subject "${input.subjectName}" to a known subject — please reselect it.`,
+    )
   }
   if (input.topicNames.length > 0 && input.topicsResolvedCount < input.topicNames.length) {
     warnings.push('Some topics could not be matched — please review the Topic selection.')

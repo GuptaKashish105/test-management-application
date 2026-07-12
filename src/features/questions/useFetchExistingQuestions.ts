@@ -3,7 +3,7 @@ import { questionsApi } from '@services/questions'
 import { useQuery } from '@tanstack/react-query'
 import type { ApiError } from '@typings/api'
 
-export const existingQuestionsQueryKey = (questionIds: string[]) =>
+const existingQuestionsQueryKey = (questionIds: string[]) =>
   ['questions', 'fetchBulk', [...questionIds].sort()] as const
 
 /** Rehydrates already-persisted questions when re-entering this step for a test that has some. */

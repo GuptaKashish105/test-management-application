@@ -8,9 +8,10 @@ import { getStatusBadgeInfo } from './statusBadge'
 export interface TestsTableProps {
   tests: Test[]
   onDelete: (test: Test) => void
+  onEdit: (test: Test) => void
 }
 
-export function TestsTable({ tests, onDelete }: TestsTableProps) {
+export function TestsTable({ tests, onDelete, onEdit }: TestsTableProps) {
   return (
     <div className="overflow-x-auto rounded-lg border border-neutral-200 bg-white">
       <table className="w-full min-w-[720px] text-left text-sm">
@@ -49,9 +50,9 @@ export function TestsTable({ tests, onDelete }: TestsTableProps) {
                     <LinkButton to={paths.previewPublish(test.id)} variant="ghost" size="sm">
                       View
                     </LinkButton>
-                    <LinkButton to={paths.testEdit(test.id)} variant="secondary" size="sm">
+                    <Button variant="secondary" size="sm" onClick={() => onEdit(test)}>
                       Edit
-                    </LinkButton>
+                    </Button>
                     <Button variant="danger" size="sm" onClick={() => onDelete(test)}>
                       Delete
                     </Button>

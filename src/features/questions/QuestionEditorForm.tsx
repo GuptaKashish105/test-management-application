@@ -26,7 +26,12 @@ const OPTION_FIELDS = [
 ]
 
 /** Keyed by the caller on `record.clientId` so switching the selected question remounts cleanly. */
-export function QuestionEditorForm({ record, topics, isLoadingTopics, onChange }: QuestionEditorFormProps) {
+export function QuestionEditorForm({
+  record,
+  topics,
+  isLoadingTopics,
+  onChange,
+}: QuestionEditorFormProps) {
   const readOnly = record.status === 'saved'
 
   const {
@@ -86,9 +91,16 @@ export function QuestionEditorForm({ record, topics, isLoadingTopics, onChange }
           </div>
         ))}
       </div>
-      {errors.correctOption && <p className="text-sm text-danger-700">{errors.correctOption.message}</p>}
+      {errors.correctOption && (
+        <p className="text-sm text-danger-700">{errors.correctOption.message}</p>
+      )}
 
-      <Textarea label="Explanation (optional)" placeholder="Type here" disabled={readOnly} {...register('explanation')} />
+      <Textarea
+        label="Explanation (optional)"
+        placeholder="Type here"
+        disabled={readOnly}
+        {...register('explanation')}
+      />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Select
@@ -108,10 +120,17 @@ export function QuestionEditorForm({ record, topics, isLoadingTopics, onChange }
         <Select
           label="Sub-topic"
           placeholder={
-            !topicId ? 'Choose a topic first' : isLoadingSubTopics ? 'Loading…' : 'Select from Drop-down'
+            !topicId
+              ? 'Choose a topic first'
+              : isLoadingSubTopics
+                ? 'Loading…'
+                : 'Select from Drop-down'
           }
           disabled={readOnly || !topicId || isLoadingSubTopics}
-          options={(subTopics ?? []).map((subTopic) => ({ value: subTopic.id, label: subTopic.name }))}
+          options={(subTopics ?? []).map((subTopic) => ({
+            value: subTopic.id,
+            label: subTopic.name,
+          }))}
           {...register('subTopicId')}
         />
       </div>

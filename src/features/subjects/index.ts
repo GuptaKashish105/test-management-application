@@ -1,1 +1,1 @@
-export { subjectsQueryKey, useSubjects } from './useSubjects'
+export { useSubjects } from './useSubjects'

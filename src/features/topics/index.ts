@@ -1,1 +1,1 @@
-export { topicsQueryKey, useTopics } from './useTopics'
+export { useTopics } from './useTopics'

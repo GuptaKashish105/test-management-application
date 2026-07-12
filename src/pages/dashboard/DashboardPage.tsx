@@ -1,7 +1,7 @@
 import { paths } from '@app/router/paths'
 import { PageContainer } from '@components/layout'
 import { Alert, Button, Input, LinkButton, LoadingState, Modal } from '@components/ui'
-import { useTests } from '@features/tests'
+import { EditTestModal, useTests } from '@features/tests'
 import type { Test } from '@services/tests'
 import { useMemo, useState } from 'react'
 
@@ -11,6 +11,7 @@ export function DashboardPage() {
   const { data: tests, isLoading, isError, error, refetch, isFetching } = useTests()
   const [search, setSearch] = useState('')
   const [testPendingDelete, setTestPendingDelete] = useState<Test | null>(null)
+  const [editingTestId, setEditingTestId] = useState<string | null>(null)
 
   const filteredTests = useMemo(() => {
     if (!tests) return []
@@ -46,7 +47,12 @@ export function DashboardPage() {
           <Alert tone="danger">
             <div className="flex items-center justify-between gap-4">
               <span>{error?.message ?? 'Failed to load tests.'}</span>
-              <Button variant="secondary" size="sm" onClick={() => refetch()} isLoading={isFetching}>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => refetch()}
+                isLoading={isFetching}
+              >
                 Retry
               </Button>
             </div>
@@ -67,9 +73,15 @@ export function DashboardPage() {
         )}
 
         {!isLoading && !isError && filteredTests.length > 0 && (
-          <TestsTable tests={filteredTests} onDelete={setTestPendingDelete} />
+          <TestsTable
+            tests={filteredTests}
+            onDelete={setTestPendingDelete}
+            onEdit={(test) => setEditingTestId(test.id)}
+          />
         )}
       </div>
+
+      <EditTestModal testId={editingTestId} onClose={() => setEditingTestId(null)} />
 
       <Modal
         isOpen={testPendingDelete !== null}

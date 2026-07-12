@@ -2,7 +2,7 @@ import { paths } from '@app/router/paths'
 import { WizardLayout } from '@components/layout'
 import { Alert, Badge, Button, LinkButton, LoadingState, Modal } from '@components/ui'
 import { useFetchExistingQuestions } from '@features/questions'
-import { TestSummaryHeader, usePublishTest, useTest } from '@features/tests'
+import { EditTestModal, TestSummaryHeader, usePublishTest, useTest } from '@features/tests'
 import { useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 
@@ -19,6 +19,7 @@ export function PreviewPublishPage() {
   const questionsQuery = useFetchExistingQuestions(questionIds)
   const publishTest = usePublishTest(testId)
   const [isSuccessOpen, setIsSuccessOpen] = useState(false)
+  const [isEditingTest, setIsEditingTest] = useState(false)
 
   if (!testId) {
     return <Navigate to={paths.dashboard} replace />
@@ -60,7 +61,7 @@ export function PreviewPublishPage() {
             <Badge tone="success">All {questions.length} Questions done</Badge>
           </div>
           <div className="mt-4 rounded-lg border border-neutral-200 p-4">
-            <TestSummaryHeader test={test} onEdit={() => navigate(paths.testEdit(testId))} />
+            <TestSummaryHeader test={test} onEdit={() => setIsEditingTest(true)} />
           </div>
           <div className="mt-3">
             <LinkButton to={paths.addQuestions(testId)} variant="secondary" size="sm">
@@ -75,7 +76,9 @@ export function PreviewPublishPage() {
             {!isAlreadyLive &&
               questions.length === 0 &&
               'Add at least 1 question before publishing.'}
-            {publishTest.error && <span className="text-danger-700">{publishTest.error.message}</span>}
+            {publishTest.error && (
+              <span className="text-danger-700">{publishTest.error.message}</span>
+            )}
           </div>
           <div className="ml-auto flex gap-3">
             <Button type="button" variant="secondary" onClick={() => navigate(paths.dashboard)}>
@@ -100,7 +103,11 @@ export function PreviewPublishPage() {
         <QuestionsReview questions={questions} />
       </div>
 
-      <Modal isOpen={isSuccessOpen} onClose={() => navigate(paths.dashboard)} title="Test published">
+      <Modal
+        isOpen={isSuccessOpen}
+        onClose={() => navigate(paths.dashboard)}
+        title="Test published"
+      >
         <p className="text-sm text-neutral-700">
           <strong>{test.name}</strong> is now live.
         </p>
@@ -110,6 +117,11 @@ export function PreviewPublishPage() {
           </Button>
         </div>
       </Modal>
+
+      <EditTestModal
+        testId={isEditingTest ? testId : null}
+        onClose={() => setIsEditingTest(false)}
+      />
     </WizardLayout>
   )
 }

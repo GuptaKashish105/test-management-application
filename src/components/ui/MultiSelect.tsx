@@ -1,7 +1,7 @@
 import { cn } from '@utils/cn'
 import { useEffect, useId, useRef, useState } from 'react'
 
-export interface MultiSelectOption {
+interface MultiSelectOption {
   value: string
   label: string
 }

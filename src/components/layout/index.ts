@@ -1,7 +1,6 @@
 export { AppShell } from './AppShell'
 export { AuthLayout } from './AuthLayout'
-export { Header } from './Header'
+export { DemoModeBanner } from './DemoModeBanner'
 export { Logo } from './Logo'
 export { PageContainer } from './PageContainer'
-export { Sidebar } from './Sidebar'
 export { WizardLayout } from './WizardLayout'

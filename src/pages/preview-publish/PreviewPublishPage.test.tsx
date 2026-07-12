@@ -15,7 +15,15 @@ vi.mock('@features/questions', async (importOriginal) => {
 })
 vi.mock('@features/tests', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@features/tests')>()
-  return { ...actual, useTest: vi.fn(), usePublishTest: vi.fn() }
+  return {
+    ...actual,
+    useTest: vi.fn(),
+    usePublishTest: vi.fn(),
+    // Real EditTestModal fetches over react-query, which needs a QueryClientProvider this
+    // suite doesn't set up — stub it down to a dialog that reveals the testId it was given.
+    EditTestModal: ({ testId }: { testId: string | null }) =>
+      testId ? <div role="dialog" aria-label={`Edit test ${testId}`} /> : null,
+  }
 })
 
 const mockedUseTest = vi.mocked(useTest)
@@ -26,7 +34,9 @@ function mockUseTest(overrides: Partial<ReturnType<typeof useTest>>) {
   mockedUseTest.mockReturnValue(overrides as unknown as ReturnType<typeof useTest>)
 }
 
-function mockUseFetchExistingQuestions(overrides: Partial<ReturnType<typeof useFetchExistingQuestions>>) {
+function mockUseFetchExistingQuestions(
+  overrides: Partial<ReturnType<typeof useFetchExistingQuestions>>,
+) {
   mockedUseFetchExistingQuestions.mockReturnValue(
     overrides as unknown as ReturnType<typeof useFetchExistingQuestions>,
   )
@@ -159,5 +169,17 @@ describe('PreviewPublishPage', () => {
     renderPage()
     expect(screen.getByText('This test is already live.')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Confirm' })).toBeDisabled()
+  })
+
+  it('opens the edit-test modal from the pencil icon on the test summary', async () => {
+    const user = userEvent.setup()
+    mockUseTest({ data: testDetail, isLoading: false, error: null })
+    mockUseFetchExistingQuestions({ data: [question], isLoading: false, error: null })
+    renderPage()
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Edit test details' }))
+    expect(screen.getByRole('dialog', { name: 'Edit test test-1' })).toBeInTheDocument()
   })
 })

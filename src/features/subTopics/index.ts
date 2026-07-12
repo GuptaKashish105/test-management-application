@@ -1,1 +1,1 @@
-export { subTopicsQueryKey, useSubTopics } from './useSubTopics'
+export { useSubTopics } from './useSubTopics'

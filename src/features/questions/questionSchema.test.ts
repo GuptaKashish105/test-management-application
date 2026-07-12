@@ -60,7 +60,10 @@ describe('questionSchema', () => {
   })
 
   it('accepts a valid media URL', () => {
-    const result = questionSchema.safeParse({ ...validInput, mediaUrl: 'https://example.com/image.png' })
+    const result = questionSchema.safeParse({
+      ...validInput,
+      mediaUrl: 'https://example.com/image.png',
+    })
     expect(result.success).toBe(true)
   })
 })
